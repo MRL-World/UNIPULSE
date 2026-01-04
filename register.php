@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Register as Donor - UniPulse</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <?php
     session_start();
@@ -24,15 +26,16 @@
         $blood_group = $conn->real_escape_string($_POST['blood_group']);
         $dob = $conn->real_escape_string($_POST['dob']);
         $phone = $conn->real_escape_string($_POST['phone']);
+        $student_id = $conn->real_escape_string($_POST['student_id']);
         $password = $_POST['password'];
         // Basic validation
         if (empty($fullname) || empty($email) || empty($password)) {
             $message = '<div class="alert error">Please fill all required fields.</div>';
         } else {
             // পাসওয়ার্ড সরাসরি সেভ করা হচ্ছে (কোনো এনক্রিপশন ছাড়া)
-            $hashed_password = $password; 
-            $sql = "INSERT INTO users (fullname, email, blood_group, dob, phone, password_hash) 
-                VALUES ('$fullname', '$email', '$blood_group', '$dob', '$phone', '$hashed_password')";
+            $hashed_password = $password;
+            $sql = "INSERT INTO users (fullname, email, student_id, blood_group, dob, phone, password_hash) 
+                VALUES ('$fullname', '$email', '$student_id', '$blood_group', '$dob', '$phone', '$hashed_password')";
             if ($conn->query($sql) === TRUE) {
                 // Auto Login
                 $_SESSION['user_id'] = $conn->insert_id;
@@ -78,6 +81,10 @@
                             </select>
                         </div>
                         <div class="form-group">
+                            <label for="student_id">Student/Faculty ID</label>
+                            <input type="text" id="student_id" name="student_id" placeholder="Ex: 20210001" required>
+                        </div>
+                        <div class="form-group">
                             <label for="dob">Date of Birth</label>
                             <input type="date" id="dob" name="dob" required>
                         </div>
@@ -112,40 +119,48 @@
             background: radial-gradient(circle at top right, #FEE2E2 0%, transparent 40%),
                 radial-gradient(circle at bottom left, #CCFBF1 0%, transparent 40%);
         }
+
         .auth-card {
             max-width: 600px;
             margin: 0 auto;
             padding: 48px;
             background: rgba(255, 255, 255, 0.85);
         }
+
         .auth-header {
             text-align: center;
             margin-bottom: 32px;
         }
+
         .auth-header p {
             color: var(--text-muted);
             margin-top: 8px;
         }
+
         .form-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 24px;
         }
+
         @media (max-width: 600px) {
             .form-grid {
                 grid-template-columns: 1fr;
             }
         }
+
         .form-group {
             display: flex;
             flex-direction: column;
             gap: 8px;
         }
+
         .form-group label {
             font-weight: 500;
             font-size: 0.95rem;
             color: var(--secondary);
         }
+
         .form-group input,
         .form-group select {
             padding: 12px 16px;
@@ -156,12 +171,14 @@
             font-size: 1rem;
             transition: all 0.3s ease;
         }
+
         .form-group input:focus,
         .form-group select:focus {
             outline: none;
             border-color: var(--primary);
             box-shadow: 0 0 0 3px rgba(225, 29, 72, 0.1);
         }
+
         .form-check {
             grid-column: 1 / -1;
             display: flex;
@@ -169,20 +186,24 @@
             align-items: center;
             margin: 16px 0 24px;
         }
+
         .btn-block {
             width: 100%;
             grid-column: 1 / -1;
         }
+
         .auth-footer {
             text-align: center;
             margin-top: 24px;
             color: var(--text-muted);
             font-size: 0.95rem;
         }
+
         .auth-footer a {
             color: var(--primary);
             font-weight: 600;
         }
     </style>
 </body>
+
 </html>
